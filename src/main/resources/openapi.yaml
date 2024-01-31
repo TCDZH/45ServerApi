@@ -1,0 +1,153 @@
+swagger: '2.0'
+info:
+  title: 45 Server
+  description: >-
+    This Api defines how the 45 Server will receive data from the 45 clients.
+  version: 1.0.0
+host: localhost #for testing/development purposes
+basePath: /45Server
+schemes:
+  - http
+produces:
+  - application/json
+
+consumes:
+  - application/json
+
+paths:
+  /add-card/{gameId}:
+    post:
+      summary: What the client calls to play a card onto the board
+      description: >-
+        Calls the Server with a valid gameId as a header, the server then 
+        accesses the database where the games are stored, retrives and adds the 
+        card to the game with the matching gameId, if this is done sucsessfully
+        then the server sends back a confirmation response. It then broadcasts 
+        this new card to each of the players, who add it to their board. 
+
+      parameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+
+        - name: card
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/client-card'
+
+      responses:
+        '200':
+          description: 'Confirmation of successful request'
+
+        '400':
+          description: 'Bad Request, required fields not there or badly formed'
+
+        '404':
+          description: 'Service not found'
+
+        '500':
+          description: 'Internal server error'
+
+  /create-game/{gameSize}:
+    post:
+      summary: Request to create and therefore be the first player in a game
+      description: >-
+        Create a new game, player provides the number of players for the game, 
+        server creates a new game object and stores it in the database, 
+        then returns a generated unique gameId to player, which they use for
+        subsequent requests and to share with other players so they can join.
+
+      parameters:
+        - name: gameSize
+          in: path
+          type: integer
+          required: true
+
+        - name: port
+          in: header
+          type: string
+          required: true
+
+      responses:
+        '200':
+          description: 'Confirmation of created game and game Id'
+          schema:
+            type: string
+
+        '400':
+          description: 'Bad Request, required fields not there or badly formed'
+
+        '404':
+          description: 'Service not found'
+
+        '500':
+          description: 'Internal server error'
+
+  /join-game/{gameId}:
+    post:
+      summary: Request to join an already created game using the id of the game
+      description: >-
+        Sends the request to the server with the game Id of an already created game,
+        the server takes this game id, checks the db to see if a game exists in the 
+        database, if so adds a player object to the game with the new players 
+        addr, and returns a confirmation to the client 
+
+      parameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+
+        - name: port
+          in: header
+          type: string
+          required: true
+
+      responses:
+        '200':
+          description: 'Confirmation that player has joined game and player No'
+          schema:
+            type: string
+            example: '0-max game'
+
+        '400':
+          description: 'Bad Request, Invalid game id '
+          schema:
+            type: string
+            example: 'gameId not found'
+
+        '404':
+          description: 'Service not found'
+
+        '500':
+          description: 'Internal server error'
+
+
+definitions:
+  client-card:
+    type: object
+    properties:
+      suit:
+        description: 'The suit of the card'
+        example: 'Heart'
+        enum:
+          - Heart
+          - Diamond
+          - Spade
+          - Club
+      number:
+        description: 'The number of the card, A J Q K Joker is 0,11,12,13,14'
+        example: 5
+        type: integer
+
+      power:
+        description: 'The power of the card, based on its suit and number'
+        example: 8
+        type: integer
+
+      player:
+        description: 'The player id of the player who played the card'
+        example: 2
+        type: integer
