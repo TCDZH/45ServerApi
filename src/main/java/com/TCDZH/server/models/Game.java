@@ -2,14 +2,19 @@ package com.TCDZH.server.models;
 
 import com.TCDZH.api.server.domain.ClientCard.SuitEnum;
 import java.util.ArrayList;
+
+import lombok.Data;
 import nonapi.io.github.classgraph.json.Id;
 
+@Data
 public class Game {
 
   @Id
   private int gameId;
 
   private ArrayList<Player> joinedPlayers;
+
+  private int maxPlayers;
 
   private ArrayList<Card> deck;
 
@@ -19,11 +24,12 @@ public class Game {
 
   private int handCount = 0;
 
-  public Game(Player firstPlayer) {
-    joinedPlayers = new ArrayList<>();
-    joinedPlayers.add(firstPlayer);
-    deck = generateDeck();
-    board = new Board(deck.remove(0));
+  public Game(Player firstPlayer, int maxPlayers) {
+    this.maxPlayers = maxPlayers;
+    this.joinedPlayers = new ArrayList<>();
+    this.joinedPlayers.add(firstPlayer);
+    this.deck = generateDeck();
+    this.board = new Board(deck.remove(0));
   }
 
   public ArrayList<Card> generateDeck(){
