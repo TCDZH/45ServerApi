@@ -109,8 +109,8 @@ paths:
         '200':
           description: 'Confirmation that player has joined game and player No'
           schema:
-            type: string
-            example: '0-max game'
+            type: integer
+            example: 3
 
         '400':
           description: 'Bad Request, Invalid game id '

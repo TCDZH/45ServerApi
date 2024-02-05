@@ -3,14 +3,22 @@ package com.TCDZH.server.models;
 import com.TCDZH.api.server.domain.ClientCard.SuitEnum;
 import java.util.ArrayList;
 
+import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import nonapi.io.github.classgraph.json.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Document("GameObjects")
 public class Game {
 
   @Id
-  private int gameId;
+  private String _id;
 
   private ArrayList<Player> joinedPlayers;
 
@@ -18,21 +26,36 @@ public class Game {
 
   private ArrayList<Card> deck;
 
-  private int turnNo = 0;
+  private int turnNo;
 
   private Board board;
 
-  private int handCount = 0;
+  private int handCount;
 
-  public Game(Player firstPlayer, int maxPlayers) {
+
+
+  public Game(String _id, ArrayList<Player> joinedPlayers, int maxPlayers, ArrayList<Card> deck, int turnNo, Board board,
+      int handCount) {
+    this._id = _id;
+    this.joinedPlayers = joinedPlayers;
     this.maxPlayers = maxPlayers;
-    this.joinedPlayers = new ArrayList<>();
-    this.joinedPlayers.add(firstPlayer);
-    this.deck = generateDeck();
-    this.board = new Board(deck.remove(0));
+    this.deck = deck;
+    this.turnNo = turnNo;
+    this.board = board;
+    this.handCount = handCount;
   }
 
-  public ArrayList<Card> generateDeck(){
+  public static Game CreateNewGame(Player firstPlayer, int maxPlayers) {
+
+    ArrayList<Player> joinedPlayers = new ArrayList<>();
+    joinedPlayers.add(firstPlayer);
+    ArrayList<Card> deck = generateDeck();
+    Board board = new Board(deck.remove(0));
+
+    Game game = new Game(UUID.randomUUID().toString(),joinedPlayers,maxPlayers,deck,0,board,0);
+    return game;
+  }
+  public static ArrayList<Card> generateDeck(){
     ArrayList<Card> deck = new ArrayList<>();
     for (SuitEnum value : SuitEnum.values()){
       for (int i = 0; i < 13; i++) {
@@ -42,5 +65,7 @@ public class Game {
     return deck;
   }
 
-
+  public void addPlayer(Player player){
+    this.joinedPlayers.add(player);
+  }
 }
