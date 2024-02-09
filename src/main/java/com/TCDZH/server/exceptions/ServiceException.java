@@ -1,6 +1,6 @@
 package com.TCDZH.server.exceptions;
 
-public class ServiceException extends Exception {
+public class ServiceException extends RuntimeException {
 
   /**
    * Constructor for Service Errors.

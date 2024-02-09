@@ -55,6 +55,7 @@ public class Game {
     Game game = new Game(UUID.randomUUID().toString(),joinedPlayers,maxPlayers,deck,0,board,0);
     return game;
   }
+
   public static ArrayList<Card> generateDeck(){
     ArrayList<Card> deck = new ArrayList<>();
     for (SuitEnum value : SuitEnum.values()){
@@ -67,5 +68,33 @@ public class Game {
 
   public void addPlayer(Player player){
     this.joinedPlayers.add(player);
+  }
+
+  public void addCardToBoard(Card card){
+    this.board.addCard(card);
+  }
+
+  public void incrementHandCount(){
+    this.handCount += 1;
+  }
+
+  public int calculateHandWinner(){
+    return this.board.findWinner();
+  }
+
+  public boolean incrementScore(int player){
+    return this.joinedPlayers.get(player).winHand();
+  }
+
+  public void resetBoard(){
+    this.board.resetBoard();
+  }
+
+  public ArrayList<Card> generateNewHand(){
+    ArrayList<Card> newHand = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      newHand.add(deck.remove(0));
+    }
+    return newHand;
   }
 }

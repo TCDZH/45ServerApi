@@ -1,6 +1,9 @@
 package com.TCDZH.server.controller;
 
+import com.TCDZH.server.exceptions.ClientErrorException;
 import com.TCDZH.server.exceptions.InvalidGameIdException;
+import com.TCDZH.server.exceptions.ServiceException;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators.In;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,5 +28,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(InvalidGameIdException.class)
   public ResponseEntity<String> handleInvalidGameIdException(InvalidGameIdException exception){
     return new ResponseEntity<>(exception.getMessage(),HttpStatus.BAD_REQUEST);
+  }
+
+  @ResponseBody
+  @ExceptionHandler(ClientErrorException.class)
+  public ResponseEntity<String> handleClientErorr(ClientErrorException exception){
+    return new ResponseEntity<>(exception.getMessage() + "Broadcast failed", HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ResponseBody
+  @ExceptionHandler(ServiceException.class)
+  public ResponseEntity<String> handleServiceError(ServiceException exception){
+    return new ResponseEntity<>(exception.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

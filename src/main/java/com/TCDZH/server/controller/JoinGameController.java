@@ -2,7 +2,7 @@ package com.TCDZH.server.controller;
 
 import com.TCDZH.api.server.controller.JoinGameApi;
 import com.TCDZH.server.models.Player;
-import com.TCDZH.server.service.JoinGameService;
+import com.TCDZH.server.service.GameService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class JoinGameController implements JoinGameApi {
   HttpServletRequest request;
 
   @Autowired
-  JoinGameService joinService;
+  GameService joinService;
 
   @Override
   public ResponseEntity<Integer> joinGameGameIdPost(String gameId, String port) {

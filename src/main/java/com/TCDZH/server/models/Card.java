@@ -15,6 +15,7 @@ public class Card {
 
   private int player;
 
+  //TODO: write this function, figure out what to do with the trump cards
   public int calcPower(){
     return 0;
   }

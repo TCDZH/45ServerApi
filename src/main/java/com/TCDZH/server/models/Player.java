@@ -10,4 +10,9 @@ public class Player {
 
   private int score;
 
+  public boolean winHand(){
+    this.score += 5;
+    return this.score == 45;
+  }
+
 }

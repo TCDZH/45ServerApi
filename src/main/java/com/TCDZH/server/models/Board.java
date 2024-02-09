@@ -2,7 +2,9 @@ package com.TCDZH.server.models;
 
 import com.TCDZH.api.server.domain.ClientCard.SuitEnum;
 import java.util.ArrayList;
+import lombok.Data;
 
+@Data
 public class Board {
 
   private ArrayList<Card> pile;
@@ -11,12 +13,17 @@ public class Board {
 
   private Card topCard;
 
-  private int findWinner(){
+  //TODO: do this one after card power, shouldn't be too bad
+  public int findWinner(){
 
     return 0; //The Id of the player who won, stored on winning card
   }
 
-  private void addCard(Card card){
+  public void resetBoard(){
+    this.pile.clear();
+  }
+
+  public void addCard(Card card){
     pile.add(card);
   }
 

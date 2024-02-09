@@ -2,11 +2,9 @@ package com.TCDZH.server.controller;
 
 import com.TCDZH.api.server.controller.CreateGameApi;
 import com.TCDZH.server.models.Player;
-import com.TCDZH.server.service.CreateGameService;
+import com.TCDZH.server.service.GameService;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +15,7 @@ public class CreateGameController implements CreateGameApi {
     HttpServletRequest request;
 
     @Autowired
-    CreateGameService service;
+    GameService service;
 
     @Override
     public ResponseEntity<String> createGameGameSizePost(Integer gameSize, String port) {
@@ -26,8 +24,7 @@ public class CreateGameController implements CreateGameApi {
         first.setPlayerAddr("http://" + request.getRemoteAddr() + ":" + port);
         first.setScore(0);
         first.setPlayerNo(0);
-        String gameId = service.createGame(first,gameSize);
 
-        return new ResponseEntity<>(gameId,HttpStatus.OK);
+        return service.createGame(first,gameSize);
     }
 }
