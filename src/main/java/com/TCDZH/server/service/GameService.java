@@ -37,7 +37,6 @@ public class GameService {
     repo.save(game);
 
     return new ResponseEntity<>(newPlayer.getPlayerNo(), HttpStatus.OK);
-
   }
 
   public ResponseEntity<String> createGame(Player firstPlayer, int gameSize){
@@ -49,7 +48,7 @@ public class GameService {
 
   }
 
-  public Game checkIfGameNull(String gameId){
+  private Game checkIfGameNull(String gameId){
     Game game = repo.findGameBy_id(gameId);
     if (game == null){
       throw new InvalidGameIdException("Game with Id " + gameId +  " does not exist");
@@ -72,9 +71,11 @@ public class GameService {
   }
 
 
-  public ResponseEntity<Void> addCard(String gameId, ClientCard card){
+  public ResponseEntity<Void> addCard(String gameId, ClientCard clientCard){
     Game game = checkIfGameNull(gameId);
-    game.addCardToBoard(new Card(card));
+    Card card = new Card(clientCard);
+    card.setPower(game.getBoard().findPowerOfCard(card));
+    game.addCardToBoard(card);
     repo.save(game);
     //Not sure if need to have retry spec, if doesnt go through first time, probs not gonna work on retrys
     broadcastToPlayers("/add-card",game.getJoinedPlayers(),card);

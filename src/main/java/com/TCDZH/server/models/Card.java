@@ -15,10 +15,11 @@ public class Card {
 
   private int player;
 
-  //TODO: write this function, figure out what to do with the trump cards - potentially add 13 power when trump card to ensure it beats non trump cards
+  //TODO: Move this function to the client side, called when card is played, 3 different tiers of power, Trump, led, nothing, a full set of power above the other
   public int calcPower(){
     return 0;
   }
+
 
   @PersistenceCreator
   public Card(SuitEnum suit, int number, int power, int player) {
@@ -31,7 +32,6 @@ public class Card {
   public Card(SuitEnum suit, int number) {
     this.suit = suit;
     this.number = number; //J:10, Q:11, K:12, A:0
-    this.power = calcPower();
     //No player in this constructor, player numbers are assigned when distributed
     //this constructor just for starting deck
   }

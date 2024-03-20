@@ -22,14 +22,12 @@
     <jakarta-annotations.version>2.1.1</jakarta-annotations.version>
     <jakarta-servlet.version>6.0.0</jakarta-servlet.version>
     <jakarta-validation-api.version>3.0.2</jakarta-validation-api.version>
-    <joda-time.version>2.12.6</joda-time.version>
-    <migbase64.version>2.2</migbase64.version>
     <springfox.version>3.0.0</springfox.version>
     <swagger-annotations.version>2.2.20</swagger-annotations.version>
     <swagger-codegen-maven-plugin.version>2.4.39</swagger-codegen-maven-plugin.version>
     <swagger-maven-plugin.version>3.1.8</swagger-maven-plugin.version>
     <swagger.file>src/main/resources/openapi.yaml</swagger.file>
-    <validation-api.version>2.0.1.Final</validation-api.version>
+    <wiremock.version>3.3.1</wiremock.version>
   </properties>
 
   <dependencies>
@@ -98,6 +96,12 @@
       <artifactId>jakarta.validation-api</artifactId>
       <version>${jakarta-validation-api.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+      <version>${wiremock.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>jakarta.servlet</groupId>

@@ -7,6 +7,7 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -15,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document("GameObjects")
+@NoArgsConstructor
 public class Game {
 
   @Id
@@ -71,6 +73,9 @@ public class Game {
   }
 
   public void addCardToBoard(Card card){
+    if(this.board.getPile().isEmpty()){
+      this.board.setLedCard(card);
+    }
     this.board.addCard(card);
   }
 

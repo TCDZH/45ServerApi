@@ -1,6 +1,8 @@
 package com.TCDZH.server.models;
 
 import com.TCDZH.api.server.domain.ClientCard.SuitEnum;
+import com.TCDZH.server.enums.CardPowerBlackEnum;
+import com.TCDZH.server.enums.CardPowerRedEnum;
 import java.util.ArrayList;
 import lombok.Data;
 
@@ -11,12 +13,34 @@ public class Board {
 
   private SuitEnum trump;
 
-  private Card topCard;
+  private Card ledCard;
 
-  //TODO: do this one after card power, shouldn't be too bad
   public int findWinner(){
+    Card winningCard = pile.get(0);
+    for (Card card : pile){
+      if (card.getPower() > winningCard.getPower()){
+        winningCard = card;
+      }
+    }
+    return winningCard.getPlayer(); //The Id of the player who won, stored on winning card
+  }
 
-    return 0; //The Id of the player who won, stored on winning card
+  //Multipliers are multiples of 17, one more than the range greatest value possible in the lower tier
+  public int findPowerOfCard(Card card){
+    int power;
+    int multiplier = 1;
+    //fucking ace of hearts being an auto trump
+    if (card.getSuit() == trump || (card.getSuit() == SuitEnum.HEART && card.getNumber() ==0)){
+      multiplier = 25;
+    } else if (card.getSuit() == ledCard.getSuit()) {
+      multiplier = 14;
+    }
+    if (card.getSuit() == SuitEnum.DIAMOND ||card.getSuit() == SuitEnum.HEART){
+      power = CardPowerRedEnum.getPower(card,multiplier==25) + multiplier;
+    }else{
+      power = CardPowerBlackEnum.getPower(card,multiplier==25) + multiplier;
+    }
+    return power;
   }
 
   public void resetBoard(){
@@ -27,9 +51,8 @@ public class Board {
     pile.add(card);
   }
 
-  public Board(Card topCard) {
-    this.trump = topCard.getSuit();
-    this.topCard = topCard;
+  public Board(Card trumpCard) {
+    this.trump = trumpCard.getSuit();
     this.pile = new ArrayList<Card>();
   }
 }
