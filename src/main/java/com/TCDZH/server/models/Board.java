@@ -1,6 +1,6 @@
 package com.TCDZH.server.models;
 
-import com.TCDZH.api.server.domain.ClientCard.SuitEnum;
+import com.TCDZH.api.server.domain.SuitEnum;
 import com.TCDZH.server.enums.CardPowerBlackEnum;
 import com.TCDZH.server.enums.CardPowerRedEnum;
 import java.util.ArrayList;

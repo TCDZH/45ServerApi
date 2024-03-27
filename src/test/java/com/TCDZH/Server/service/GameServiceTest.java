@@ -1,13 +1,17 @@
 package com.TCDZH.Server.service;
 
+import static com.TCDZH.server.models.Game.generateDeck;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import com.TCDZH.api.server.domain.ClientCard;
-import com.TCDZH.api.server.domain.ClientCard.SuitEnum;
+import com.TCDZH.api.server.domain.SuitEnum;
+import com.TCDZH.server.models.Board;
 import com.TCDZH.server.models.Card;
 import com.TCDZH.server.models.Game;
 import com.TCDZH.server.models.Player;
@@ -53,17 +57,36 @@ class GameServiceTest {
   private Game game;
 
 
-  //Dont spy the game service, just find a way to mock out the repo, that is the
-  //real issue.
+  //Dont spy the game service, just find a way to mock out the repo
   @BeforeEach
   public void WiremockSetup(WireMockRuntimeInfo wireMockRuntimeInfo){
     wireMock = wireMockRuntimeInfo.getWireMock();
     Player player = new Player();
     player.setPlayerAddr(wireMockRuntimeInfo.getHttpBaseUrl());
-    game = Game.CreateNewGame(player, 2);
 
+    ArrayList<Card> deck = generateDeck();
+
+    Board board = new Board(deck.remove(0));
+
+    ArrayList<Player> joined = new ArrayList<>();
+    joined.add(player);
+
+    game.set_id("testId");
+    game.setJoinedPlayers(joined);
+    game.setMaxPlayers(2);
+    game.setDeck(deck);
+    game.setBoard(board);
 
   }
+  /*
+      ArrayList<Player> joinedPlayers = new ArrayList<>();
+    joinedPlayers.add(firstPlayer);
+    ArrayList<Card> deck = generateDeck();
+    Board board = new Board(deck.remove(0));
+
+    Game game = new Game(UUID.randomUUID().toString(),joinedPlayers,maxPlayers,deck,0,board,0);
+    return game;
+   */
 
 
   @Test
@@ -88,7 +111,8 @@ class GameServiceTest {
   @Test
   void endOfHand() {
     when(repo.save(eq(game))).thenReturn(game);
-
+    //when(game.calculateHandWinner()).thenReturn(0);
+    doReturn(0).when(game).calculateHandWinner();
     wireMock.register(WireMock.post("/end-hand/0")
         .willReturn(ok()));
 
@@ -115,11 +139,14 @@ class GameServiceTest {
     newHand.add(card);
 
     //Assert that the body is equal to this new hand
-    when(game.generateNewHand()).thenReturn(newHand);
 
-    wireMock.register(WireMock.post("/end-round")
+    doReturn(newHand).when(game).generateNewHand();
+
+    wireMock.register(WireMock.post("/end-round/" + game.getBoard().getTrump().toString())
         .withRequestBody(equalTo(mapper.writeValueAsString(newHand)))
         .willReturn(ok()));
+
+    gameService.endRound(game);
 
   }
 }

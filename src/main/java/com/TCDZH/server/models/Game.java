@@ -1,17 +1,11 @@
 package com.TCDZH.server.models;
 
-import com.TCDZH.api.server.domain.ClientCard.SuitEnum;
+import com.TCDZH.api.server.domain.SuitEnum;
 import java.util.ArrayList;
-
 import java.util.UUID;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import nonapi.io.github.classgraph.json.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -33,8 +27,6 @@ public class Game {
   private Board board;
 
   private int handCount;
-
-
 
   public Game(String _id, ArrayList<Player> joinedPlayers, int maxPlayers, ArrayList<Card> deck, int turnNo, Board board,
       int handCount) {
@@ -96,6 +88,7 @@ public class Game {
   }
 
   public ArrayList<Card> generateNewHand(){
+
     ArrayList<Card> newHand = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       newHand.add(deck.remove(0));

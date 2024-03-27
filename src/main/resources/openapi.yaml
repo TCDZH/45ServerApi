@@ -126,17 +126,23 @@ paths:
 
 
 definitions:
+
+  suit-enum:
+    type: string
+    example: 'Heart'
+    enum:
+      - Heart
+      - Diamond
+      - Spade
+      - Club
+
   client-card:
     type: object
     properties:
       suit:
         description: 'The suit of the card'
-        example: 'Heart'
-        enum:
-          - Heart
-          - Diamond
-          - Spade
-          - Club
+        $ref: '#/definitions/suit-enum'
+
       number:
         description: 'The number of the card, A J Q K Joker is 0,11,12,13,14'
         example: 5
@@ -151,3 +157,13 @@ definitions:
         description: 'The player id of the player who played the card'
         example: 2
         type: integer
+
+  new-hand:
+    type: object
+    properties:
+      hand:
+        type: array
+        items:
+          $ref: '#/definitions/client-card'
+      trump:
+        $ref: '#/definitions/suit-enum'

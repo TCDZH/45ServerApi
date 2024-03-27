@@ -1,6 +1,6 @@
 package com.TCDZH.server.models;
 import com.TCDZH.api.server.domain.ClientCard;
-import com.TCDZH.api.server.domain.ClientCard.SuitEnum;
+import com.TCDZH.api.server.domain.SuitEnum;
 import lombok.Data;
 import org.springframework.data.annotation.PersistenceCreator;
 
@@ -14,12 +14,6 @@ public class Card {
   private int power;
 
   private int player;
-
-  //TODO: Move this function to the client side, called when card is played, 3 different tiers of power, Trump, led, nothing, a full set of power above the other
-  public int calcPower(){
-    return 0;
-  }
-
 
   @PersistenceCreator
   public Card(SuitEnum suit, int number, int power, int player) {

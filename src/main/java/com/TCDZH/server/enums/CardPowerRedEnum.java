@@ -1,7 +1,7 @@
 package com.TCDZH.server.enums;
 
 
-import com.TCDZH.api.server.domain.ClientCard.SuitEnum;
+import com.TCDZH.api.server.domain.SuitEnum;
 import com.TCDZH.server.exceptions.ServiceException;
 import com.TCDZH.server.models.Card;
 import jakarta.servlet.ServletException;

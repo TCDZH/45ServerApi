@@ -48,9 +48,6 @@ public enum CardPowerBlackEnum {
   private final boolean trump;
 
 
-  /**
-   * The trump boolean indicates if the power / order of that card is changed if that card is the trump suit
-   */
   CardPowerBlackEnum(int number, boolean trump, int power) {
     this.number = number;
     this.power = power;

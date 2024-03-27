@@ -3,7 +3,7 @@ package com.TCDZH.Server.models;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.TCDZH.api.server.domain.ClientCard.SuitEnum;
+import com.TCDZH.api.server.domain.SuitEnum;
 import com.TCDZH.server.models.Board;
 import com.TCDZH.server.models.Card;
 import org.junit.jupiter.api.BeforeEach;
