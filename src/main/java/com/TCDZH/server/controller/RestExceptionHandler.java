@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
+/**
+ * Alot of these dont make much sense, most of these exceptions is thrown when you get back a error response from a webclient call
+ * why would you then return another error response entity, and who would be listening, seems wrong, but will come out in the wash? hopefully?
+ */
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {

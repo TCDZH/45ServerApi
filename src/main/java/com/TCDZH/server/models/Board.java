@@ -47,12 +47,17 @@ public class Board {
     this.pile.clear();
   }
 
+  public void setTrump(Card card){this.trump = card.getSuit();}
+
+  //The led card thing might not be neccassary, just look at first card in pile? might cause issues tho
   public void addCard(Card card){
+    if(this.pile.isEmpty()){
+      this.setLedCard(card);
+    }
     pile.add(card);
   }
 
-  public Board(Card trumpCard) {
-    this.trump = trumpCard.getSuit();
+  public Board() {
     this.pile = new ArrayList<Card>();
   }
 }

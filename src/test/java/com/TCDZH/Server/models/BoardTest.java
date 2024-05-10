@@ -24,7 +24,8 @@ public class BoardTest {
     Card card3 = new Card(SuitEnum.SPADE,12);
     card1.setPower(1);
 
-    Board board = new Board(card1);
+    Board board = new Board();
+    board.setTrump(card1);
 
     board.addCard(card1);
     board.addCard(card2);
@@ -43,7 +44,8 @@ public class BoardTest {
     void setBoard(){
       Card setTrump = new Card(SuitEnum.CLUB,13);
       Card setLed = new Card(SuitEnum.SPADE,1);
-      board = new Board(setTrump);
+      board = new Board();
+      board.setTrump(setTrump);
       board.setLedCard(setLed);
     }
 

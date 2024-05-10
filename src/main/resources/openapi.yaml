@@ -20,8 +20,8 @@ paths:
       summary: What the client calls to play a card onto the board
       description: >-
         Calls the Server with a valid gameId as a header, the server then 
-        accesses the database where the games are stored, retrives and adds the 
-        card to the game with the matching gameId, if this is done sucsessfully
+        accesses the database where the games are stored, retrieves and adds the 
+        card to the game with the matching gameId, if this is done successfully
         then the server sends back a confirmation response. It then broadcasts 
         this new card to each of the players, who add it to their board. 
 
@@ -126,7 +126,6 @@ paths:
 
 
 definitions:
-
   suit-enum:
     type: string
     example: 'Heart'

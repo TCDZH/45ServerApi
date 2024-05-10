@@ -1,6 +1,7 @@
 package com.TCDZH.server.models;
 
 import com.TCDZH.api.server.domain.SuitEnum;
+import com.TCDZH.server.service.GameService;
 import java.util.ArrayList;
 import java.util.UUID;
 import lombok.Data;
@@ -20,20 +21,17 @@ public class Game {
 
   private int maxPlayers;
 
-  private ArrayList<Card> deck;
-
   private int turnNo;
 
   private Board board;
 
   private int handCount;
 
-  public Game(String _id, ArrayList<Player> joinedPlayers, int maxPlayers, ArrayList<Card> deck, int turnNo, Board board,
+  public Game(String _id, ArrayList<Player> joinedPlayers, int maxPlayers, int turnNo, Board board,
       int handCount) {
     this._id = _id;
     this.joinedPlayers = joinedPlayers;
     this.maxPlayers = maxPlayers;
-    this.deck = deck;
     this.turnNo = turnNo;
     this.board = board;
     this.handCount = handCount;
@@ -43,31 +41,18 @@ public class Game {
 
     ArrayList<Player> joinedPlayers = new ArrayList<>();
     joinedPlayers.add(firstPlayer);
-    ArrayList<Card> deck = generateDeck();
-    Board board = new Board(deck.remove(0));
+    Board board = new Board();
 
-    Game game = new Game(UUID.randomUUID().toString(),joinedPlayers,maxPlayers,deck,0,board,0);
+    Game game = new Game(UUID.randomUUID().toString(),joinedPlayers,maxPlayers,0,board,0);
     return game;
-  }
-
-  public static ArrayList<Card> generateDeck(){
-    ArrayList<Card> deck = new ArrayList<>();
-    for (SuitEnum value : SuitEnum.values()){
-      for (int i = 0; i < 13; i++) {
-        deck.add(new Card(value,i));
-      }
-    }
-    return deck;
   }
 
   public void addPlayer(Player player){
     this.joinedPlayers.add(player);
   }
 
+
   public void addCardToBoard(Card card){
-    if(this.board.getPile().isEmpty()){
-      this.board.setLedCard(card);
-    }
     this.board.addCard(card);
   }
 
@@ -87,12 +72,5 @@ public class Game {
     this.board.resetBoard();
   }
 
-  public ArrayList<Card> generateNewHand(){
 
-    ArrayList<Card> newHand = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      newHand.add(deck.remove(0));
-    }
-    return newHand;
-  }
 }
