@@ -25,7 +25,7 @@ public class Board {
     return winningCard.getPlayer(); //The Id of the player who won, stored on winning card
   }
 
-  //Multipliers are multiples of 17, one more than the range greatest value possible in the lower tier
+  //Multipliers are multiples of 14, one more than the range greatest value possible in the lower tier
   public int findPowerOfCard(Card card){
     int power;
     int multiplier = 1;

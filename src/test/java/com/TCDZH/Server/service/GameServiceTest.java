@@ -130,7 +130,7 @@ class GameServiceTest {
   }
 
   @Test
-  void endRound() throws JsonProcessingException {
+  void endRound() {
     ArrayList<Card> newHand = new ArrayList<>();
 
     ObjectMapper mapper = new ObjectMapper();

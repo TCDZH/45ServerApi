@@ -20,6 +20,8 @@ public class CreateGameController implements CreateGameApi {
     @Override
     public ResponseEntity<String> createGameGameSizePost(Integer gameSize, String port) {
 
+        //GameSize validation is done at the UI
+
         Player first = new Player();
         first.setPlayerAddr("http://" + request.getRemoteAddr() + ":" + port);
         first.setScore(0);

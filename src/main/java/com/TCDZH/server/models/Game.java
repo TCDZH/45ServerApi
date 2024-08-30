@@ -53,6 +53,7 @@ public class Game {
 
 
   public void addCardToBoard(Card card){
+
     this.board.addCard(card);
   }
 

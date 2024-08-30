@@ -11,6 +11,8 @@ import com.TCDZH.server.models.Card;
 import com.TCDZH.server.models.Game;
 import com.TCDZH.server.models.Player;
 import com.TCDZH.server.repositories.GameRepo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Random;
 import lombok.Data;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import springfox.documentation.spring.web.json.Json;
 
 @Service
 @Data
@@ -51,6 +54,8 @@ public class GameService {
     return new ResponseEntity<>(newPlayer.getPlayerNo(), HttpStatus.OK);
   }
 
+
+
   /**
    * This function triggers when a create game request is received from a client
    * It creates a game object, stores it in the mongo database and returns to the player the game id, so they can share it with
@@ -60,6 +65,7 @@ public class GameService {
    * @return
    */
   public ResponseEntity<String> createGame(Player firstPlayer, int gameSize){
+
     Game newGame = Game.CreateNewGame(firstPlayer,gameSize);
 
     repo.save(newGame);
@@ -69,11 +75,11 @@ public class GameService {
   }
 
   /**
-   * This function triggers when all the players have joined (or (led?) player sends signal to start, not added).
+   * This function triggers when all the players have joined (or (lead?) player sends signal to start, not added).
    * It broadcasts to all players that the game has started and triggers the clients go switch to the game screen.
    * This brodcast contains the trump card for the first round of the game and the initial hand the players start with.
    */
-  public void startGame(Game game){
+  public void startGame(Game game) {
     deck = generateDeck();
     game.getBoard().setTrump(deck.remove(new Random().nextInt(51)));
 
@@ -159,7 +165,6 @@ public class GameService {
 
     game.incrementHandCount();
     game.resetBoard();
-    repo.save(game);
 
     broadcastToPlayers("/end-hand/" + winner,game.getJoinedPlayers(),"");
 
@@ -188,7 +193,8 @@ public class GameService {
    */
   public void endRound(Game game){
     //put trump card in path param
-    this.deck = generateDeck(); // resetting the deck after each round, the reset deck never gets saved but then again it didnt really need to
+    this.deck = generateDeck();// resetting the deck after each round, the reset deck never gets saved but then again it didnt really need to
+
     game.getBoard().setTrump(deck.remove(new Random().nextInt(51)));
 
     for(Player player : game.getJoinedPlayers()){
@@ -202,10 +208,15 @@ public class GameService {
     }
   }
 
-  public ArrayList<Card> generateNewHand(){
+  public ArrayList<Card> generateNewHand()  {
     ArrayList<Card> newHand = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
       newHand.add(deck.remove(0));
+    }
+    try {
+      System.out.println(new ObjectMapper().writeValueAsString(newHand));
+    }catch (JsonProcessingException ignore){
+
     }
     return newHand;
   }
